@@ -1,24 +1,52 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import {
+  BrowserRouter as Router,
+  Route,
+  Routes,
+  Navigate,
+} from "react-router-dom";
+import Tasks from "./components/tasks";
+import Login from "./components/login";
+import Register from "./components/register";
+import { useState } from "react";
 
 function App() {
+  const [logged, setLogged] = useState(false);
+
+  const login = () => {
+    setLogged(true)
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <Routes>
+        {/*  REDIRECCION SI NO ESTA LOGGEADO */}
+        <Route
+          path="/"
+          element={
+            logged ? (
+              <Navigate to="/tasks"></Navigate>
+            ) : (
+              <Navigate to="/login"></Navigate>
+            )
+          }
+        ></Route>
+
+        {/* RUTAS */}
+        <Route
+          path="/tasks"
+          element={
+            logged ? (
+              <Tasks></Tasks>
+            ) : (
+              <Navigate to="/login"></Navigate>
+            )
+          }
+        ></Route>
+        <Route path="/login" element={<Login funcion={login}></Login>}></Route>
+        <Route path="/register" element={<Register></Register>}></Route>
+      </Routes>
+    </Router>
   );
 }
 
